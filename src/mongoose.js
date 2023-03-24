@@ -13,6 +13,8 @@ mongoose
 	});
 
 const addBook = async (req, res) => {
+	const now = new Date();
+
 	const bookToAdd = new Book({
 		title: req.body.title,
 		description: req.body.description,
@@ -20,6 +22,9 @@ const addBook = async (req, res) => {
 		publisher: req.body.publisher,
 		pages: req.body.pages,
 		tags: req.body.tags,
+		publishedAt: req.body.publishedAt || null,
+		addedAt: now,
+		lastUpdatedAt: now,
 	});
 
 	try {
@@ -52,6 +57,8 @@ const updateBook = async (req, res) => {
 			publisher: req.body.publisher,
 			pages: req.body.pages,
 			tags: req.body.tags,
+			publishedAt: req.body.publishedAt || null,
+			lastUpdatedAt: new Date(),
 		});
 
 		res.json({ message: `Successfully updated book "${book.title}"` });
