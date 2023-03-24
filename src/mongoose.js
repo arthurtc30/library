@@ -72,7 +72,7 @@ const deleteBook = async (req, res) => {
 };
 
 const findBooks = async (req, res) => {
-	const { title, author, publisher } = req.query;
+	const { title, author, publisher, sort } = req.query;
 
 	try {
 		const books = await Book.find({
@@ -81,7 +81,11 @@ const findBooks = async (req, res) => {
 			...(publisher && {
 				publisher: { $regex: publisher, $options: "i" },
 			}),
-		}).exec();
+		})
+			.sort({
+				title: sort && sort == "desc" ? -1 : 1,
+			})
+			.exec();
 		res.json({ message: `Found ${books.length} books`, results: books });
 	} catch (err) {
 		res.json({ message: "Could find books", error: err.message });
